@@ -1,9 +1,38 @@
 # Blog Build — Agent Handover Document
 
 **Prepared:** June 2026  
+**Last updated:** June 2026  
 **Prepared by:** Tasklet AI agent  
 **GitHub account:** kiwipaulrob  
 **For:** Any agent continuing build, maintenance, or feature work on these blogs
+
+---
+
+## ⚠️ Strategy Update — June 2026
+
+**Cloudflare Pages has been retired. GitHub Pages is now the standard for all three blogs.**
+
+A sister project (heargodandevil.com — a generated static music site) hit Cloudflare Pages' **25 MB artifact limit** in production — Git history caused pack files to exceed the limit, breaking deployments entirely. While a text blog grows more slowly, the constraint is architectural and applies to any Git-backed project with meaningful history.
+
+Combined with the dual-auth complexity of the Cloudflare build (Cloudflare Access front door + GitHub OAuth PKCE — two separate auth layers), and the fact that two of three blogs were already on GitHub Pages, the decision was made to standardise on GitHub Pages for all builds.
+
+**What this means for an incoming agent:**
+
+| Blog | Was | Now |
+|---|---|---|
+| Donald from Dunedin | GitHub Pages | GitHub Pages (no change) |
+| My Audio Projects | GitHub Pages | GitHub Pages (no change) |
+| My Audio Projects CF | Cloudflare Pages (**active focus**) | **RETIRED** — use `myaudioprojects/` instead |
+
+The `myaudioprojects-cf/` folder is kept locally for reference. Do not deploy it. The `myaudioprojects/` GitHub Pages build is the canonical audio blog going forward.
+
+**Deployment checklist for `myaudioprojects/` when ready:**
+1. Create GitHub repo `kiwipaulrob/myaudioprojects`, push `myaudioprojects/` to it
+2. Enable GitHub Pages (main branch, root folder)
+3. Add CNAME file with `myaudioprojects.com`, set DNS A records (185.199.108–111.153)
+4. Set up Netlify: connect repo → Identity → invite-only → GitHub provider → Git Gateway → invite blog owner's email
+5. Update `admin/config.yml`: replace `GITHUB_USERNAME` placeholder with actual username
+6. Transfer repo to blog owner when ready; update `admin/config.yml` again with their username
 
 ---
 
@@ -21,13 +50,13 @@ Three blog builds. Each is a simple personal blog — Paul's mental model is "a 
 
 Paul builds these on his own GitHub account, then transfers the repo to the blog owner once done.
 
-| Blog | Domain | Hosting | Auth method |
-|---|---|---|---|
-| Donald from Dunedin | donaldfromdunedin.com | GitHub Pages | Netlify Identity |
-| My Audio Projects | myaudioprojects.com | GitHub Pages | Netlify Identity |
-| My Audio Projects (CF variant) | myaudioprojects.com | Cloudflare Pages | Cloudflare Access + GitHub OAuth |
+| Blog | Domain | Hosting | Auth method | Status |
+|---|---|---|---|---|
+| Donald from Dunedin | donaldfromdunedin.com | GitHub Pages | Netlify Identity | Active |
+| My Audio Projects | myaudioprojects.com | GitHub Pages | Netlify Identity | Active — canonical audio blog |
+| My Audio Projects (CF variant) | myaudioprojects.com | Cloudflare Pages | Cloudflare Access + GitHub OAuth | **Retired June 2026** |
 
-The Cloudflare Pages build (`myaudioprojects-cf`) is the current focus — it is the more sophisticated build and the one where active decisions are being made.
+All three builds are local template builds — none have been deployed to a live domain yet. The `myaudioprojects/` GitHub Pages build is the current focus. The `myaudioprojects-cf/` Cloudflare Pages build is retired and should not be deployed.
 
 ---
 
@@ -431,8 +460,12 @@ Site will be available at `http://localhost:4000`. The CMS admin panel will not 
 
 ## Summary of Current State
 
-All three builds are complete and zipped. The Cloudflare Pages build is the most current and is the active focus. No build has been deployed to a live domain yet — they are all local template builds awaiting Paul's deployment. 
+All three builds are complete and zipped. No build has been deployed to a live domain yet — they are all local template builds awaiting Paul's deployment.
 
-The key open question is whether to add a comments system to the Cloudflare Pages build, and if so, which one. That decision requires Paul's sign-off before any code is written.
+**Hosting strategy standardised on GitHub Pages (June 2026)** — the Cloudflare Pages build (`myaudioprojects-cf`) has been retired. See the Strategy Update section at the top of this document.
+
+The canonical audio blog build is now `myaudioprojects/` (GitHub Pages + Netlify Identity). The deployment checklist is in the Strategy Update section above.
+
+The key open question is whether to add a comments system to the audio blog. Research was done (Giscus, Utterances, Cusdis, Disqus, Hyvor Talk, Remark42) — see Comments Research section above. No decision has been made. That decision requires Paul's sign-off before any code is written.
 
 Update SPEC.md after any significant changes.
